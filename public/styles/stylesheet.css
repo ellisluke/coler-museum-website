@@ -1,0 +1,17 @@
+table {
+    width: 90%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+td {
+    width: 25%;
+}
+
+img {
+    height: 60px;
+}

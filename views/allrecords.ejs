@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/stylesheet.css">
+    <title>All Art</title>
+</head>
+<body>
+    <h2>All Art in database</h2>
+
+    <table>
+        <tr>
+            <th>ARTWORK</th>
+            <th>NAME</th>
+            <th>FILE NAME</th>
+            <th>FILE TYPE</th>
+        </tr>
+        <% results.forEach((result) => { %>
+            <tr>
+                <td>
+                    <img src="images/<%= result.filename %>.<%= result.filetype %>">
+                </td>
+                <td><%= result.name %></td>
+                <td><%= result.filename %></td>
+                <td><%= result.filetype %></td>
+            </tr>
+        <% }) %>
+    </table>
+    
+</body>
+</html>
