@@ -8,5 +8,12 @@
         "med": "Medium",
         "filename": "",
         "filetype": ""
+    },
+    {
+        "TEMPLATE": "GALLERY",
+        "gallery-name": "",
+        "gallery-cap": "",
+        "gallery-desc": "",
+        "id-displays": ""
     }
 ]
