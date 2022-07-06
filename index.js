@@ -80,7 +80,7 @@ server.get("/all_art", async (req, res) => {
     try {
         console.log("All records have been requested!")
         let result = await artCollection.find({}).toArray()
-        res.render("allrecords.ejs", {results: result})
+        res.render("phone-gallery.ejs", {results: result})
     } catch (e) {
         res.status(500).send("FAILURE")
     }
