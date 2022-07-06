@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Art</title>
+</head>
+<body>
+    <form action="/submit-art" enctype="multipart/form-data" method="post">
+        <label for="artist-name">Artist Name: </label>
+        <input name="artist-name" type="text">
+        <br>
+        <label for="art-name">Title of piece: </label>
+        <input name="art-name" type="text">
+        <br>
+        <label for="date">Date of Completion: </label>
+        <input name="date" type="text">
+        <br>
+        <label for="med">Medium of art: </label>
+        <input name="med" type="text">
+        <br>
+        <label for="statement">Artist Statement</label>
+        <input name="statement" type="text">
+        <br>
+        <label for="filename">Upload picture of art here</label>
+        <input name="image" type="file" accept="image/jpg, image/png">
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
