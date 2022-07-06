@@ -46,6 +46,15 @@ server.listen(port, async () => {
     }
 })
 
+// Home page
+server.get("/", (req, res) => {
+    res.render("home.ejs")
+})
+
+server.get("/galleries", (req, res) => {
+    res.render("galleries.ejs")
+})
+
 // UPLOAD DATA
 server.post("/submit-art", upload.single("image"), async (req, res) => {
     try {
