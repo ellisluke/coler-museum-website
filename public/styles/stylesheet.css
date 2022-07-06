@@ -1,18 +1,19 @@
 body {
     background-color: #191919;
     font-family: 'Times New Roman',Times, serif;
-    font-size:18px;
+    font-size: 16px;
+    margin: 0;
 }
 
 /* coler blue:#20448c, dark blue: #152238, black: #302c2c, white: #fffff4 */
 
 nav ul {
-    margin-top: 10;
-    padding: 0;
+    padding: 10px;
+    margin-top: 0;
     display: flex;
     flex-direction: row;
     list-style-type: none;
-    background-color: white;
+    background-color: #2f2f2f;
 }
 
 nav ul li {
@@ -53,12 +54,13 @@ img {
     align-items: center;
 }
 
-h1, p {
+h2, p {
     color: #fef2c4;
+    margin: 10px;
 }
 /* #f5f5dd */
 
-h1 {
+h2 {
     text-align: center;  
 }
 
