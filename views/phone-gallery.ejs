@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/stylesheet.css">
+    <title>Gallery</title>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="all_art">Gallery</a></li>
+            <li><a href="">Virtual Museum</a></li>
+            <li><a href="">Admin</a></li>
+        </ul>
+    </nav>
+
+    <h1>Coler Hospital Gallery</h1>
+
+    <p>Welcome to the Coler Hospital Gallery! This is a collection of our patients' artwork. Our recreation therapists engage our interested patients in art sessions every Tuesday, though our most dedicated artists work on their pieces every day! We are currently featuring the work of Ramon Montano. </p>
+    <!-- Can adjust as needed to fit the name of the actual collection -->
+
+    <% results.forEach((result) => { %>
+        <div class="plant-img">
+            <img src="images/uploads/<%= result.filename %>">
+            <div class="descrip">
+                <p><%= result.title %></p>
+                <p><em>by artist</em></p>
+            </div>
+        </div>
+     <% }) %>
+    
+</body>
+</html>
