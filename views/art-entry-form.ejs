@@ -7,7 +7,7 @@
     <title>Add Art</title>
 </head>
 <body>
-    <form method="post" action="/submit-art">
+    <form action="/submit-art" enctype="multipart/form-data" method="post">
         <label for="artist-name">Artist Name: </label>
         <input name="artist-name" type="text">
         <br>
@@ -22,6 +22,9 @@
         <br>
         <label for="statement">Artist Statement</label>
         <input name="statement" type="text">
+        <br>
+        <label for="filename">Upload picture of art here</label>
+        <input name="image" type="file" accept="image/jpg, image/png">
         <br>
         <input type="submit" value="Submit">
     </form>
