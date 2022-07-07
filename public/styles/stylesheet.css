@@ -1,7 +1,7 @@
 body {
     background-color: #191919;
     font-family: 'Times New Roman',Times, serif;
-    font-size: 16px;
+    font-size: 18px;
     margin: 0;
 }
 
@@ -38,7 +38,7 @@ img {
     width: 200px;
     height: auto;
     border-image: url(/images/frame.png);
-    border-image-slice: 140;
+    border-image-slice: 135;
     display: block;
     margin: auto;
 }
@@ -64,3 +64,51 @@ h2 {
     text-align: center;  
 }
 
+.home-gallery img {
+    max-width: 800px;
+    flex-grow: 1;
+}
+
+.home-gallery {
+    position: relative;
+    display: flex;
+}
+
+.home-gallery a {
+    position: absolute;
+    top: 70%;
+    left: 35%;
+    right: 35%;
+    background-color: #191919;
+    color: #fef2c4;
+    font-family: 'Times New Roman',Times, serif;
+    font-size: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding: 10px;
+    border: #fef2c4 double 3px;
+    text-decoration: none;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.home-gallery a:hover {
+    color: #d2b374;
+    font-weight: 700;
+    border: #d2b374 double 3px;
+}
+
+.home-descrip {
+    max-width: 600px;
+    margin: auto;
+}
+
+@media (max-width: 650px) {
+    .home-gallery a {
+        font-size: 14px;
+        padding: 4px;
+        top: 65%;
+        left: 30%;
+        right: 30%;
+    }
+}

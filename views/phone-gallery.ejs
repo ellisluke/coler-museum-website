@@ -11,8 +11,7 @@
 
     <nav>
         <ul>
-            <li><a href="/all_art">Gallery</a></li>
-            <li><a href="">Virtual Museum</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="">Admin</a></li>
         </ul>
     </nav>
@@ -27,7 +26,7 @@
             <img src="images/uploads/<%= result.filename %>">
             <div class="descrip">
                 <p><%= result.title %></p>
-                <p><em>by artist</em></p>
+                <p><em><%= result.artistname %>, <%= result.date %></em></p>
             </div>
         </div>
      <% }) %>
