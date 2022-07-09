@@ -1,0 +1,36 @@
+.image-box {
+    text-decoration: none;
+    width: 25%;
+    height: 300px;
+    color: black;
+    margin-left: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    float: left;
+    border: 2px black solid;
+
+}
+
+img {
+   height: 200px;
+   max-width: 100%;
+   display: flex;
+   margin-right: auto;
+   margin-left: auto;
+
+}
+
+.image-box p {
+    width: 100%;
+    float: left;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    float: center;
+}
+
+.artist {
+    text-align: center;
+}

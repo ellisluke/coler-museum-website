@@ -1,0 +1,45 @@
+<!-- This is where the administrator can update artwork, must be logged in -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit <%= details.title %></title>
+</head>
+<body>
+    <form method="post" action="/edit-art=<%= details._id %>">
+        <label for="title">Title: </label>
+        <input type="text" value="<%= details.title %>" name="title">
+        <br>
+        <img src="/images/uploads/<%= details.filename %>" style="height: 300px">
+        <br>
+        <label for="artistname">Artist name: </label>
+        <input type="text" value="<%= details.artistname %>" name="artistname">
+        <label for="statement">Artist Statement: </label>
+        <textarea name="statement"><%= details.statement %></textarea>
+        <label for="date">Date of completion: </label>
+        <input type="text" value="<%= details.date %>" name="date">
+        <label for="date">Medium: </label>
+        <input type="text" value="<%= details.med %>" name="med">
+        <br>
+        <input type="submit" value="Save Changes">
+    </form>
+
+    <form method="post" action="/delete-art=<%= details._id %>" onsubmit="return confirmDelete(this)">
+        <input type="submit" value="Delete Artwork">
+    </form>
+
+    <script type="text/javascript">
+        function confirmDelete(form) {
+            if (confirm ('You are about to delete <%= details.title %> by <%= details.artistname %>. This cannot be undone. Are you sure you you with to proceed?')) {
+                return true
+            } else {
+                return false
+            }
+        }
+    </script>
+    
+    
+</body>
+</html>

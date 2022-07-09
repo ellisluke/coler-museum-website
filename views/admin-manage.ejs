@@ -1,0 +1,23 @@
+<!-- This will show admin all artwork in database and they can click on them to edit them -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/admin.css">
+    <title>Manage All Art</title>
+</head>
+<body>
+    <p>Administrator Manage Art</p>
+    <br>
+    <% art.forEach((piece) => { %>
+    <a href="/edit-art=<%= piece._id %>" class="image-box">
+        <img src="/images/uploads/<%= piece.filename %>">
+        <p class="title"><%= piece.title %></p>
+        <p class="artist"><%= piece.artistname %></p>
+    </a>
+    <% }) %>
+    
+</body>
+</html>

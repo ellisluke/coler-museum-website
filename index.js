@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { MongoClient, ObjectID, MongoUnexpectedServerResponseError } = require("mongodb")
+const { MongoClient, ObjectID, MongoUnexpectedServerResponseError, ObjectId } = require("mongodb")
 const express = require("express")
 const BodyParser = require('body-parser')
 const { response } = require("express")
@@ -73,6 +73,9 @@ server.get("/galleries", (req, res) => {
 })
 
 server.get('/login', (req, res) => {
+    if (req.session.admin == true) {
+        res.redirect("/admin")
+    }
     res.render("login.ejs", {message: ""})
 })
 
@@ -104,12 +107,63 @@ server.post('/login', async (req, res) => {
 
 // ADMIN PAGE
 server.get("/admin", async (req, res) => {
-    console.log(req.session.admin)
+    // Make sure user is logged in
     if (!req.session.admin) {
         res.redirect('/')
     }
     else {
-        res.render("admin.ejs")
+        try {
+            var galleryData = await galleryCollection.find({}).toArray()
+            res.render("admin.ejs")
+        } catch (e) {
+            res.send(e)
+        } 
+    } 
+    // res.render("admin.ejs", galleryData)
+})
+
+server.get("/admin-manage", async (req, res) => {
+    // comment out next three lines for login work around
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    // } else {
+        try {
+            var pieces = await artCollection.find({}).project({ title: 1, artistname: 1, filename: 1}).toArray()
+            res.render("admin-manage.ejs", {art: pieces})
+        } catch (e) {
+            res.send(e)
+        }
+    // }
+
+})
+
+server.get("/edit-art=:art_id", async (req, res) => {
+    try {
+        console.log("Requested data for art id: " + req.params.art_id)
+        let details = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
+        res.render("edit-art.ejs", {details: details})
+        
+    } catch (e) {
+        res.send(e)
+    }
+})
+
+server.post("/edit-art=:art_id", async (req, res) => {
+    try {
+        let result = await artCollection.updateOne({"_id": ObjectId(req.params.art_id)}, {$set: req.body})
+        res.send(result)
+    } catch (e) {
+        res.send(e)
+    }
+})
+
+server.post("/delete-art=:delete_id", async (req, res) => {
+    try {
+        // DELETE IMAGE AS WELL???
+        let result = await artCollection.deleteOne({"_id": ObjectId(req.params.delete_id)})
+        res.redirect("/admin-manage")
+    } catch (e) {
+        res.send(e)
     }
 })
 
