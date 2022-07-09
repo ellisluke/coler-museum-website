@@ -5,7 +5,7 @@ body {
     margin: 0;
 }
 
-/* coler blue:#20448c, dark blue: #152238, black: #302c2c, white: #fffff4 */
+/* coler blue:#20448c, dark blue: #152238, black: #302c2c, white: #fffff4, dark gray nav: #2f2f2f */
 
 nav ul {
     padding: 10px;
@@ -14,6 +14,15 @@ nav ul {
     flex-direction: row;
     list-style-type: none;
     background-color: #2f2f2f;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    width: 100%;
+}
+
+ul {
+    margin: none;
+    margin-block-end: 0;
 }
 
 nav ul li {
@@ -25,9 +34,11 @@ nav ul li {
 nav ul li a {
   display: block;
   padding: .25em .5em;
-  color: #fef2c4;
+  color: white;
   text-decoration: none;
 }
+
+/* yellowish white: #fef2c4 */
 
 a:hover {
     color: #d2b374;
@@ -55,18 +66,21 @@ img {
 }
 
 h2, p {
-    color: #fef2c4;
-    margin: 10px;
+    color: white;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 /* #f5f5dd */
 
+
 h2 {
     text-align: center;  
+    font-weight: 100;
 }
 
 .home-gallery img {
-    max-width: 800px;
     flex-grow: 1;
+    border: none;
 }
 
 .home-gallery {
@@ -74,41 +88,61 @@ h2 {
     display: flex;
 }
 
+.home-descrip {
+    position: absolute;
+}
+
+.home-gallery h2 {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    right: 10%;
+    font-size: 72px;
+    font-weight: 400;
+    color: white;
+    padding: 10px;
+}
+
 .home-gallery a {
     position: absolute;
     top: 70%;
-    left: 35%;
-    right: 35%;
-    background-color: #191919;
-    color: #fef2c4;
+    left: 40%;
+    right: 40%;
+    background-color: white;
+    color: #191919;
     font-family: 'Times New Roman',Times, serif;
-    font-size: 16px;
+    font-size: 24px;
     padding-left: 20px;
     padding-right: 20px;
     padding: 10px;
-    border: #fef2c4 double 3px;
     text-decoration: none;
     text-align: center;
     flex-grow: 1;
 }
 
 .home-gallery a:hover {
-    color: #d2b374;
-    font-weight: 700;
-    border: #d2b374 double 3px;
+    color: white;
+    background-color: #191919;
 }
 
 .home-descrip {
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
+    left: 10%;
+    right: 10%;
+    padding-bottom: 60px;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 800px) {
     .home-gallery a {
         font-size: 14px;
         padding: 4px;
         top: 65%;
-        left: 30%;
-        right: 30%;
+        left: 35%;
+        right: 35%;
+    }
+    .home-gallery h2 {
+        font-size: 28px;
+        top: 20%;
     }
 }
