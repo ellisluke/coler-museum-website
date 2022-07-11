@@ -11,9 +11,9 @@
     },
     {
         "TEMPLATE": "GALLERY",
-        "gallery-name": "",
-        "gallery-cap": "",
-        "gallery-desc": "",
-        "id-displays": ""
+        "galleryname": "",
+        "gallerycap": "",
+        "gallerydesc": "",
+        "displaysIDs": []
     }
 ]

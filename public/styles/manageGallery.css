@@ -1,0 +1,13 @@
+.location-box {
+    height: 300px;
+    width: 300px;
+    border: 2px black solid;
+    float: left;
+    margin-left: 2%;
+    margin-bottom: 2%;
+}
+
+.box-image {
+    max-width: 300px;
+    max-height: 200px;
+}

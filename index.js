@@ -49,6 +49,7 @@ const port = process.env.PORT || 3000
 var artCollection
 var galleryCollection
 var userCollection
+var gallery
 
 
 server.listen(port, async () => {
@@ -114,7 +115,8 @@ server.get("/admin", async (req, res) => {
     else {
         try {
             var galleryData = await galleryCollection.find({}).toArray()
-            res.render("admin.ejs")
+            // async function to build array of actual art data
+            res.render("admin.ejs", {gallery: galleryData})
         } catch (e) {
             res.send(e)
         } 
@@ -162,6 +164,26 @@ server.post("/delete-art=:delete_id", async (req, res) => {
         // DELETE IMAGE AS WELL???
         let result = await artCollection.deleteOne({"_id": ObjectId(req.params.delete_id)})
         res.redirect("/admin-manage")
+    } catch (e) {
+        res.send(e)
+    }
+})
+
+server.get("/manage-gallery=:galleryNum", async (req, res) => {
+    try {
+        gallery = client.db("coler-museum").collection("gallery-" + req.params.galleryNum)
+        galleryContents = await gallery.find({}).toArray()
+        var artIDs = []
+
+        galleryContents.forEach(piece => {
+            artIDs.push(ObjectId(piece.art_id))
+        });
+
+        var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
+        res.render("manage-gallery.ejs", {
+            galNum: req.params.galleryNum, 
+            gallery: galleryContents, 
+            art: artData })
     } catch (e) {
         res.send(e)
     }
