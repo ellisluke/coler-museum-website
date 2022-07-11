@@ -36,12 +36,14 @@ nav ul li a {
   padding: .25em .5em;
   color: white;
   text-decoration: none;
+  transition: 0.5s;
 }
 
 /* yellowish white: #fef2c4 */
 
 a:hover {
     color: #d2b374;
+    transition: 0.5s;
 }
 
 img {
@@ -118,11 +120,13 @@ h2 {
     text-decoration: none;
     text-align: center;
     flex-grow: 1;
+    transition: 0.5s;
 }
 
 .home-gallery a:hover {
     color: white;
     background-color: #191919;
+    transition: 0.5s;
 }
 
 .home-descrip {
