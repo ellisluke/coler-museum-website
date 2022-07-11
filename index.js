@@ -197,10 +197,13 @@ server.get("/manage-gallery=:galleryID", async (req, res) => {
 
 server.post("/manage-gallery=:galleryID", async (req, res) => {
     try {
-        console.log(req.params.galleryID)
-        let result = await galleryCollection.update(
+        let result = await galleryCollection.updateOne(
             {"_id": ObjectId(req.params.galleryID)}, 
-            {$set: {"displaysIDs": req.body.art_id}})
+            {$set: {
+                "displaysIDs": req.body.art_id,
+                "gallerydesc": req.body.gallerydesc,
+                "galleryname": req.body.galleryname
+            }})
         res.redirect("/manage-gallery=" + req.params.galleryID)
     } catch (e) {
         res.send(e)
