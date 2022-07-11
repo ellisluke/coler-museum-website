@@ -12,16 +12,16 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/login">Admin</a></li>
+            <li><a href="/login">Log In</a></li>
         </ul>
     </nav>
 
     <h2>Hidden</h2>
 
-    <h2>Coler Hospital Gallery</h2>
+    <h1>Coler Hospital Gallery</h1>
 
     <% results.forEach((result) => { %>
-        <div class="plant-img">
+        <div class="img">
             <img src="images/uploads/<%= result.filename %>">
             <div class="descrip">
                 <p><%= result.title %></p>
