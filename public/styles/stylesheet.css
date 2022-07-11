@@ -13,11 +13,12 @@ nav ul {
     display: flex;
     flex-direction: row;
     list-style-type: none;
-    background-color: #2f2f2f;
+    background-color: #191919;
     position: fixed;
     z-index: 2;
     top: 0;
     width: 100%;
+    border-bottom: 2px solid #d2b374;
 }
 
 ul {
@@ -63,19 +64,22 @@ img {
     margin: 0;
 }
 
-.plant-img {
+.img {
     align-items: center;
 }
 
-h2, p {
+h1, h2, p {
     color: white;
     margin-left: 20px;
     margin-right: 20px;
 }
 /* #f5f5dd */
 
+h1 {
+    margin-bottom: 0px;
+}
 
-h2 {
+h1, h2 {
     text-align: center;  
     font-weight: 100;
 }
@@ -135,6 +139,27 @@ h2 {
     left: 10%;
     right: 10%;
     padding-bottom: 60px;
+}
+
+.footer {
+    margin-top: 40px;
+    width: 100%;
+    text-align: center;
+}
+
+.footer p, .footer a {
+    display: inline-block;
+    color: white;
+}
+
+.footer a {
+    text-decoration: none;
+    border-bottom: white solid 2px;
+}
+
+.footer a:hover {
+    transition: 0.5s;
+    border-bottom: #d2b374 solid 2px;
 }
 
 @media (max-width: 800px) {
