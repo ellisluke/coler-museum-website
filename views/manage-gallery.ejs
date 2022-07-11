@@ -13,6 +13,16 @@
     <p>Manage Gallery <%= gallery.gallerynum %></p>
     <br>
     <form method="post" action="/manage-gallery=<%= galID %> " id="galleryForm">
+        <div id="gallery-data-box">
+            <label for="galleryname">Gallery Name: </label>
+            <input type="text" name="galleryname" value="<%= gallery.galleryname %>">
+            <br>
+            <label for="gallerydesc">Gallery Description: </label>
+            <textarea name="gallerydesc" cols="50" rows="6"><%= gallery.gallerydesc %> </textarea>
+            <p>Gallery Capacity: <%= gallery.gallerycap %> Pieces</p>
+        </div>
+        
+
         <% var thisArt
         var counter = 0%>
         <% gallery.displaysIDs.forEach(id => { %>
