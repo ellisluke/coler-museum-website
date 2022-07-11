@@ -1,3 +1,10 @@
+a {
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    height: 100%;
+}
+
 .location-box {
     height: 300px;
     width: 300px;
@@ -10,4 +17,10 @@
 .box-image {
     max-width: 300px;
     max-height: 200px;
+}
+
+select {
+    width: 90%;
+    text-align: center;
+    margin-left: 5%;
 }

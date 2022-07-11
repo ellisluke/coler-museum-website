@@ -36,6 +36,7 @@ server.set('view engine', "ejs")
 server.use(express.static('public'))
 server.use('/images', express.static(path.join(__dirname, 'public', 'images')))
 server.use('/css', express.static(path.join(__dirname, 'public', 'styles')))
+server.use('/scripts', express.static(path.join(__dirname, 'public', 'scripts')))
 
 server.use(session({
     secret: "aqu457mcf06$%^&@",
@@ -169,24 +170,47 @@ server.post("/delete-art=:delete_id", async (req, res) => {
     }
 })
 
-server.get("/manage-gallery=:galleryNum", async (req, res) => {
+// These two are for admin's gallery management page
+server.get("/manage-gallery=:galleryID", async (req, res) => {
     try {
-        gallery = client.db("coler-museum").collection("gallery-" + req.params.galleryNum)
-        galleryContents = await gallery.find({}).toArray()
-        var artIDs = []
+        // gallery = client.db("coler-museum").collection("gallery-" + req.params.galleryNum)
+        galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
+        // var artIDs = galleryContents.displaysIDs
 
-        galleryContents.forEach(piece => {
-            artIDs.push(ObjectId(piece.art_id))
-        });
+        // galleryContents.forEach(piece => {
+        //     artIDs.push(ObjectId(piece.art_id))
+        // });
 
-        var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
+        // get all art data, used for filling inital boxes and dropdowns
+        let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
+
+        // var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
         res.render("manage-gallery.ejs", {
-            galNum: req.params.galleryNum, 
+            galID: req.params.galleryID, 
             gallery: galleryContents, 
             art: artData })
+        // res.send(galleryContents)
     } catch (e) {
         res.send(e)
     }
+})
+
+server.post("/manage-gallery=:galleryID", async (req, res) => {
+    try {
+        console.log(req.params.galleryID)
+        let result = await galleryCollection.update(
+            {"_id": ObjectId(req.params.galleryID)}, 
+            {$set: {"displaysIDs": req.body.art_id}})
+        res.redirect("/manage-gallery=" + req.params.galleryID)
+    } catch (e) {
+        res.send(e)
+    }
+    
+})
+
+server.get("/specific-art=:art_id", async (req, res) => {
+    let specificArt = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
+    res.send(specificArt)
 })
 
 // UPLOAD DATA
