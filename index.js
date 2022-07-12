@@ -3,6 +3,7 @@ const { MongoClient, ObjectID, MongoUnexpectedServerResponseError, ObjectId } = 
 const express = require("express")
 const BodyParser = require('body-parser')
 const { response } = require("express")
+const cors = require('cors')
 const path = require('path')
 const { appendFile } = require("fs")
 const multer = require("multer")
@@ -44,6 +45,14 @@ server.use(session({
     saveUninitialized: false,
     cookie: { maxAge: 60000 }
 }))
+
+// CORS
+server.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+    res.setHeader("Access-Control-Allow-Methods", 'GET')
+
+    next()
+})
 
 const client = new MongoClient(process.env.LUKE_ATLAS_URI)
 const port = process.env.PORT || 3000
@@ -211,6 +220,21 @@ server.post("/manage-gallery=:galleryID", async (req, res) => {
         res.send(e)
     }
     
+})
+
+server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
+    try {
+        let galleryData = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
+        var artIDArray = []
+        galleryData.displaysIDs.forEach(piece => {
+            artIDArray.push(ObjectId(piece))
+        })
+        let artData = await artCollection.find({"_id": {"$in": artIDArray}}).toArray()
+        
+        res.send(artData)
+    } catch (e) {
+        res.send(e)
+    }
 })
 
 server.get("/specific-art=:art_id", async (req, res) => {

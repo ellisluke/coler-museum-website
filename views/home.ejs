@@ -10,13 +10,6 @@
     <title>Coler Hospital Virtual Museum</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/galleries">Gallery</a></li>
-            <li><a href="/login">Admin</a></li>
-        </ul>
-    </nav>
-
 
     <div class="home-gallery">
         <h2>Coler Hospital Virtual Museum</h2>
@@ -28,6 +21,12 @@
         <h2>Welcome!</h2>
         <p>This is the Coler Hospital Virtual Museum, where we have digitized the artwork of our talented patients. Our recreation therapists engage our interested patients in art sessions every Tuesday, though our most dedicated artists work on their pieces every day! </p>
         <p>Our museum is currently featuring exhibits titled <strong><%= galleries[0].galleryname %></strong> and <strong><%= galleries[1].galleryname %></strong>. We hope you enjoy your browsing.</p>
+        <!-- <p>Our museum is currently featuring the <strong>xxx collection</strong>. We hope you enjoy your browsing.</p> -->
+
+        <div class="footer">
+            <a href="/login">Admin Log In</a> <p>|</p>
+            <a href="https://www.nychealthandhospitals.org/coler/">Coler Hospital</a>
+        </div>
     </div>
 
 </body>
