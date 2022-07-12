@@ -66,8 +66,10 @@ server.listen(port, async () => {
 })
 
 // Home page
-server.get("/", (req, res) => {
-    res.render("home.ejs")
+server.get("/", async (req, res) => {
+    let gals = await galleryCollection.find({}).project({galleryname: 1}).toArray()
+    res.render("home.ejs", {galleries: gals})
+    
 })
 
 server.get("/galleries", (req, res) => {
