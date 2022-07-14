@@ -5,29 +5,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/forms.css">
     <title>Add Art</title>
 </head>
 <body>
-    <form action="/submit-art" enctype="multipart/form-data" method="post">
-        <label for="artistname">Artist Name: </label>
-        <input name="artistname" type="text">
-        <br>
-        <label for="title">Title of piece: </label>
-        <input name="title" type="text">
-        <br>
-        <label for="date">Date of Completion: </label>
-        <input name="date" type="text">
-        <br>
-        <label for="med">Medium of art: </label>
-        <input name="med" type="text">
-        <br>
-        <label for="statement">Artist Statement</label>
-        <textarea name="statement" type="text"></textarea>
-        <br>
-        <label for="filename">Upload picture of art here</label>
-        <input name="image" type="file" accept="image/jpg, image/png">
-        <br>
-        <input type="submit" value="Submit">
-    </form>
+    <div class="addart">
+        <h2>Add New Art</h2>
+        <form action="/submit-art" enctype="multipart/form-data" method="post">
+            <label for="artistname">Artist Name</label>
+            <input name="artistname" type="text">
+            <br>
+            <label for="title">Title of piece</label>
+            <input name="title" type="text">
+            <br>
+            <label for="date">Date of Completion</label>
+            <input name="date" type="text">
+            <br>
+            <label for="med">Medium of Art</label>
+            <input name="med" type="text">
+            <br>
+            <label for="statement">Artist Statement</label>
+            <textarea name="statement" type="text"></textarea>
+            <br>
+            <label for="filename">Upload Picture of Art</label>
+            <input name="image" type="file" accept="image/jpg, image/png">
+            <!-- <br> -->
+            <input id = "submit" type="submit" value="Add to Database">
+        </form>
+
+        <div class="return"><a href="/admin">Return to Admin Landing Page</a></div>
+    </div>
 </body>
 </html>
