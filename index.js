@@ -55,7 +55,7 @@ server.use((req, res, next) => {
 })
 
 const client = new MongoClient(process.env.LUKE_ATLAS_URI)
-const port = process.env.PORT || 3000
+const port = 8080 
 var artCollection
 var galleryCollection
 var userCollection
@@ -76,8 +76,13 @@ server.listen(port, async () => {
 
 // Home page
 server.get("/", async (req, res) => {
-    let gals = await galleryCollection.find({}).project({galleryname: 1}).toArray()
-    res.render("home.ejs", {galleries: gals})
+    try {
+        let gals = await galleryCollection.find({}).project({galleryname: 1}).toArray()
+        res.render("home.ejs", {galleries: gals})
+    } catch (e) {
+        res.send(e)
+    }
+    
     
 })
 
@@ -227,7 +232,7 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
         let galleryData = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
         var artIDArray = []
         galleryData.displaysIDs.forEach(piece => {
-            artIDArray.push(ObjectId(piece))
+            artIDArray.push(new MongoClient.ObjectID(piece))
         })
         let artData = await artCollection.find({"_id": {"$in": artIDArray}}).toArray()
         
@@ -238,8 +243,14 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
 })
 
 server.get("/specific-art=:art_id", async (req, res) => {
-    let specificArt = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
-    res.send(specificArt)
+    try {
+        let specificArt = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
+        res.send(specificArt)
+    }
+    catch (e) {
+        res.send(e)
+    }
+    
 })
 
 // UPLOAD DATA
