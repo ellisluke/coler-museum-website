@@ -229,14 +229,29 @@ server.post("/manage-gallery=:galleryID", async (req, res) => {
 
 server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     try {
+        // Pull gallery data
         let galleryData = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
-        var artIDArray = []
-        galleryData.displaysIDs.forEach(piece => {
-            artIDArray.push(new MongoClient.ObjectID(piece))
-        })
-        let artData = await artCollection.find({"_id": {"$in": artIDArray}}).toArray()
         
-        res.send(artData)
+        var artIDArray = galleryData.displaysIDs.map((id) => {
+            return ObjectId(id)
+        })
+        // galleryData.displaysIDs.forEach(piece => {
+        //     artIDArray.push(new MongoClient.ObjectID(piece))
+        // })
+        let artData = await artCollection.find({"_id": {"$in": artIDArray}}).toArray()
+
+        var finalArtArray = []
+
+        galleryData.displaysIDs.forEach(id => {
+            finalArtArray.push(artData.find((piece) => {
+                return piece["_id"].equals(id)
+            }))
+        });
+        
+        res.send({
+            galleryInfo: galleryData,
+            artInfo: finalArtArray
+        })
     } catch (e) {
         res.send(e)
     }
