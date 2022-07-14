@@ -34,7 +34,7 @@
                     <p>Location <%= counter %></p>
                     
                     <img class="box-image" src="/images/uploads/<%= thisArt.filename %>" >
-                    <input type=hidden name="name" value="<%= id %>">
+                    <input type="hidden" name="name" value="<%= id %>">
                 </a>
                 <select class="artSelection" name="art_id">
                     <option value="<%= id %>" selected="selected"><%= thisArt.artistname %> - <%= thisArt.title%> </option>
