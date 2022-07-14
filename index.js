@@ -126,10 +126,10 @@ server.post('/login', async (req, res) => {
 // ADMIN PAGE
 server.get("/admin", async (req, res) => {
     // Make sure user is logged in
-    if (!req.session.admin) {
-        res.redirect('/')
-    }
-    else {
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    // }
+    // else {
         try {
             var galleryData = await galleryCollection.find({}).toArray()
             // async function to build array of actual art data
@@ -137,7 +137,7 @@ server.get("/admin", async (req, res) => {
         } catch (e) {
             res.send(e)
         } 
-    } 
+    // } 
     // res.render("admin.ejs", galleryData)
 })
 
