@@ -3,34 +3,39 @@ body {
 }
 
 .login, .addart {
-    text-align: center;
+    /* text-align: center; */
     border: 2px solid #45629f;
     max-width: 600px;
     margin: auto;
     padding-bottom: 30px;
 }
 
+h2 {
+    text-align: center;
+}
+
+
+label, input, textarea {
+    display: block;
+    margin: auto;
+}
+
 label {
-    padding-right: 240px;
-}
-
-.addart label {
-    padding-left: 20px;
-}
-
-.add-art input #submit {
-    margin-bottom: 30px;
+    padding-left: 145px;
 }
 
 input, textarea {
     height: 30px;
     width: 300px;
-    margin-bottom: 10px;
-    margin-top: 5px;
+}
+
+.login input {
+    margin-bottom: 12px;
 }
 
 label {
-    margin: 10px;
+    margin: 5px;
+    margin-left: 0px;
 }
 
 
@@ -40,6 +45,7 @@ label {
 
 .return {
     padding-top: 10px;
+    text-align: center;
 }
 
 a {
@@ -62,7 +68,13 @@ a:hover {
     border: none;
     font-family: 'Times New Roman',Times, serif;
     font-size: 16px;
+    margin-top: 10px;
 }
+
+.addart #submit {
+    margin-bottom: 10px;
+}
+
 /* #8499c1, #45629f */
 #submit:hover {
     cursor: pointer;
