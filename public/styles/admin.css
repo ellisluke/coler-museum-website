@@ -1,36 +1,64 @@
+body {
+    font-family: 'Times New Roman',Times, serif;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.all-art {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.filling-space {
+    width: 300px;
+    height: 0;
+    margin: 20px;
+}
+
+h2, p {
+    text-align: center;
+}
+
+.page {
+    border: 5px solid #45629f;
+    margin:20px;
+}
+
 .image-box {
     text-decoration: none;
-    width: 25%;
-    height: 300px;
+    width: 300px;
+    height: 275px;
     color: black;
-    margin-left: 5%;
-    margin-top: 5%;
-    margin-bottom: 5%;
     float: left;
-    border: 2px black solid;
+    border: 2px solid #45629f;
+    margin: 20px;
+}
 
+.image-box:hover {
+    border: 4px double #27458b;
+    /* transition: 0.5s; */
 }
 
 img {
    height: 200px;
-   max-width: 100%;
+   width: auto;
    display: flex;
    margin-right: auto;
    margin-left: auto;
 
 }
 
-.image-box p {
-    width: 100%;
-    float: left;
-}
-
 .title {
     width: 100%;
     text-align: center;
     float: center;
+    margin-bottom: 0;
 }
 
 .artist {
     text-align: center;
+    font-style: italic;
+    margin-bottom: 0;
+    margin-top: 5px;
 }

@@ -1,19 +1,17 @@
 body {
     font-family: 'Times New Roman',Times, serif;
+    margin-top: 0;
 }
 
 
 .login, .addart {
     /* text-align: center; */
-    border: 2px solid #45629f;
+    border: 5px solid #45629f;
     max-width: 600px;
     margin: auto;
     padding-bottom: 30px;
     background-color: white;
-}
-
-.login {
-    margin-top: 200px;
+    margin-top: 20px;
 }
 
 .loginbody {
