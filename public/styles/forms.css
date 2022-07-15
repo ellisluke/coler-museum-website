@@ -9,6 +9,15 @@ body {
     max-width: 600px;
     margin: auto;
     padding-bottom: 30px;
+    background-color: white;
+}
+
+.login {
+    margin-top: 200px;
+}
+
+.loginbody {
+    background-image: url(/images/LoginBG.jpg);
 }
 
 h2 {
