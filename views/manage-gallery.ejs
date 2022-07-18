@@ -10,47 +10,41 @@
     <title>Manage Gallery <%= gallery.gallerynum %></title>
 </head>
 <body>
-    <div class="gallery">
-        <h2>Manage Gallery <%= gallery.gallerynum %></h2>
-
-        <div class="details">
-            <form method="post" action="/manage-gallery=<%= galID %> " id="galleryForm">
-                <div class=center-text"><label for="galleryname">Gallery Name: </label></div>
-                <input type="text" name="galleryname" value="<%= gallery.galleryname %>">
-
-                <div class=center-text"><label for="gallerydesc">Gallery Description: </label></div>
-                <textarea name="gallerydesc" cols="50" rows="6"><%= gallery.gallerydesc %> </textarea>
-                <div class=center-text"><p>Gallery Capacity: <%= gallery.gallerycap %> Pieces</p></div>
-                <input id="submit" type="submit" value="Save Changes">
-            </form>
+    <p>Manage Gallery <%= gallery.gallerynum %></p>
+    <br>
+    <form method="post" action="/manage-gallery=<%= galID %> " id="galleryForm">
+        <div id="gallery-data-box">
+            <label for="galleryname">Gallery Name: </label>
+            <input type="text" name="galleryname" value="<%= gallery.galleryname %>">
+            <br>
+            <label for="gallerydesc">Gallery Description: </label>
+            <textarea name="gallerydesc" cols="50" rows="6"><%= gallery.gallerydesc %> </textarea>
+            <p>Gallery Capacity: <%= gallery.gallerycap %> Pieces</p>
+            <input type="submit" value="Save Changes">
         </div>
+        
+
+        <% var thisArt
+        var counter = 0%>
+        <% gallery.displaysIDs.forEach(id => { %>
+            <% counter++ %>
+            <% thisArt = art.find((piece) => piece._id == id) %>
+            <div class="location-box">
+                <a href="/edit-art=<%= id %>">
+                    <p>Location <%= counter %></p>
+                    
+                    <img class="box-image" src="/images/uploads/<%= thisArt.filename %>" >
+                    <input type="hidden" name="name" value="<%= id %>">
+                </a>
+                <select class="artSelection" name="art_id">
+                    <option value="<%= id %>" selected="selected"><%= thisArt.artistname %> - <%= thisArt.title%> </option>
+                    <% art.forEach(piece => { %>
+                        <option value="<%= piece._id %>"><%= piece.artistname + ' - ' + piece.title %></option>
+                    <% }) %>
+                </select>
+            </div>
             
-        <div class="artwork">
-            <% var thisArt
-            var counter = 0%>
-            <% gallery.displaysIDs.forEach(id => { %>
-                <% counter++ %>
-                <% thisArt = art.find((piece) => piece._id == id) %>
-                <div class="location-box">
-                    <a href="/edit-art=<%= id %>">
-                        <p>Location <%= counter %></p>
-                        
-                        <img class="box-image" src="/images/uploads/<%= thisArt.filename %>" >
-                        <input type="hidden" name="name" value="<%= id %>">
-                    </a>
-                    <select class="artSelection" name="art_id">
-                        <option value="<%= id %>" selected="selected"><%= thisArt.artistname %> - <%= thisArt.title%> </option>
-                        <% art.forEach(piece => { %>
-                            <option value="<%= piece._id %>"><%= piece.artistname + ' - ' + piece.title %></option>
-                        <% }) %>
-                    </select>
-                </div>
-                
-            <% }) %>
-            <div class="filling-space"></div>
-            <div class="filling-space"></div>
-            <div class="filling-space"></div>
-        </div>
-    </div>
+        <% }) %>
+    </form>
 </body>
 </html>
