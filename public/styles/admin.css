@@ -62,3 +62,19 @@ img {
     margin-bottom: 0;
     margin-top: 5px;
 }
+
+.return {
+    padding-top: 0px;
+    text-align: center;
+}
+
+a {
+    color: #1167b1;
+    text-decoration: none;
+    border-bottom: solid 2px #1167b1;
+}
+
+a:hover {
+    color: #27458b;
+    border-bottom: solid 2px #27458b;
+}
