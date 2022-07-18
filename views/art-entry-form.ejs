@@ -12,24 +12,24 @@
     <div class="addart">
         <h2>Add New Art</h2>
         <form action="/submit-art" enctype="multipart/form-data" method="post">
-            <label for="artistname">Artist Name</label>
+            <div class="center-text"><label for="artistname">Artist Name</label></div>
             <input name="artistname" type="text">
-            <br>
-            <label for="title">Title of piece</label>
+            
+            <div class="center-text"><label for="title">Title of piece</label></div>
             <input name="title" type="text">
-            <br>
-            <label for="date">Date of Completion</label>
+            
+            <div class="center-text"><label for="date">Date of Completion</label></div>
             <input name="date" type="text">
-            <br>
-            <label for="med">Medium of Art</label>
+            
+            <div class="center-text"><label for="med">Medium of Art</label></div>
             <input name="med" type="text">
-            <br>
-            <label for="statement">Artist Statement</label>
+            
+            <div class="center-text"><label for="statement">Artist Statement</label></div>
             <textarea name="statement" type="text"></textarea>
-            <br>
-            <label for="filename">Upload Picture of Art</label>
+            
+            <div class="center-text"><label for="filename">Upload Picture of Art</label></div>
             <input name="image" type="file" accept="image/jpg, image/png">
-            <!-- <br> -->
+            
             <input id = "submit" type="submit" value="Add to Database">
         </form>
 

@@ -4,7 +4,7 @@ body {
 }
 
 
-.login, .addart {
+.login, .addart, .edit-art {
     /* text-align: center; */
     border: 5px solid #45629f;
     max-width: 600px;
@@ -14,27 +14,37 @@ body {
     margin-top: 20px;
 }
 
+img {
+    display: block;
+    margin: auto;
+    margin-bottom: 15px;
+    border: solid 2px #45629f;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
 .loginbody {
     background-image: url(/images/LoginBG.jpg);
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 h2 {
     text-align: center;
 }
 
-
-label, input, textarea {
-    display: block;
-    margin: auto;
-}
-
-label {
-    padding-left: 145px;
-}
-
 input, textarea {
     height: 30px;
     width: 300px;
+}
+
+.center-text {
+    width: 308px;
+    padding-bottom: 5px;
 }
 
 .login input {
@@ -46,6 +56,11 @@ label {
     margin-left: 0px;
 }
 
+input, textarea {
+    font-family: 'Times New Roman',Times, serif;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
 
 .return p, .return a {
     display: inline;
@@ -67,7 +82,7 @@ a:hover {
     border-bottom: solid 2px #27458b;
 }
 
-#submit {
+#submit, #delete {
     width: 315px;
     height: 40px;
     border-radius: 2em;
@@ -76,7 +91,16 @@ a:hover {
     border: none;
     font-family: 'Times New Roman',Times, serif;
     font-size: 16px;
-    margin-top: 10px;
+}
+
+#delete {
+    background-color: #bb0a1e;
+}
+
+#delete:hover {
+    cursor: pointer;
+    background-color: #8b0000;
+    transition: 0.5s;
 }
 
 .addart #submit {
