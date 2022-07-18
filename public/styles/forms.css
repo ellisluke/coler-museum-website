@@ -47,6 +47,15 @@ input, textarea {
     padding-bottom: 5px;
 }
 
+.center-text p, .center-text a {
+    display: inline;
+}
+
+#last {
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
 .login input {
     margin-bottom: 12px;
 }

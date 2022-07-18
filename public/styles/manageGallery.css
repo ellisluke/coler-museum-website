@@ -26,8 +26,13 @@ label, .details p{
 }
 
 .details {
-    display: flex;
-    justify-content: center;
+    text-align: center;
+}
+
+.center-text {
+    display: inline-block;
+    text-align: left;
+    width: 315px;
 }
 
 #submit {
@@ -38,8 +43,9 @@ label, .details p{
     color: white;
     border: none;
     font-family: 'Times New Roman',Times, serif;
+    margin-top: 10px;
+    margin-bottom: 0px;
     font-size: 16px;
-    margin-top: 20px;
 }
 
 #submit:hover {
@@ -70,6 +76,10 @@ label {
     margin-top: 20px;
 }
 
+.border {
+    text-align: center;
+}
+
 .artwork {
     display: flex;
     flex-wrap: wrap;
@@ -87,6 +97,22 @@ a {
     color: black;
     width: 100%;
     height: 100%;
+}
+
+.return {
+    padding-top: 10px;
+    text-align: center;
+}
+
+.return a {
+    color: #1167b1;
+    text-decoration: none;
+    border-bottom: solid 2px #1167b1;
+}
+
+.return a:hover {
+    color: #27458b;
+    border-bottom: solid 2px #27458b;
 }
 
 .location-box {
