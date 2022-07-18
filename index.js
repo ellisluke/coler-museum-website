@@ -189,15 +189,7 @@ server.post("/delete-art=:delete_id", async (req, res) => {
 // These two are for admin's gallery management page
 server.get("/manage-gallery=:galleryID", async (req, res) => {
     try {
-        // gallery = client.db("coler-museum").collection("gallery-" + req.params.galleryNum)
         galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
-        // var artIDs = galleryContents.displaysIDs
-
-        // galleryContents.forEach(piece => {
-        //     artIDs.push(ObjectId(piece.art_id))
-        // });
-
-        // get all art data, used for filling inital boxes and dropdowns
         let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
 
         // var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
@@ -205,7 +197,10 @@ server.get("/manage-gallery=:galleryID", async (req, res) => {
             galID: req.params.galleryID, 
             gallery: galleryContents, 
             art: artData })
-        // res.send(galleryContents)
+        // res.send({
+        //     galID: req.params.galleryID, 
+        //     gallery: galleryContents, 
+        //     art: artData })
     } catch (e) {
         res.send(e)
     }
