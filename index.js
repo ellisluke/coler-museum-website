@@ -276,7 +276,7 @@ server.post("/submit-art", upload.single("image"), async (req, res) => {
         res.render("entry-result.ejs", {result: result, file_result: file_add})
     } catch (e) {
         console.log(e)
-        res.status(500).send("DIDN'T WORK :(")
+        res.status(500).send("ERROR")
     }
 })
 
