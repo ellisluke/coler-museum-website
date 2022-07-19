@@ -314,8 +314,8 @@ server.get("/gallery-data", async(req, res) => {
 })
 
 server.get("/enter-art", async (req, res) => {
-    if (!req.session.admin) {
-        res.redirect('/')
-    }
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    // }
     res.render("art-entry-form.ejs")
 })
