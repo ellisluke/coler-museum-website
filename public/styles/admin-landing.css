@@ -70,6 +70,7 @@ img {
 .return {
     padding-top: 10px;
     text-align: center;
+    width: 400px;
 }
 
 .return a {

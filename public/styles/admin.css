@@ -43,6 +43,7 @@ h2, p {
 img {
    height: 200px;
    width: auto;
+   max-width: 300px;
    display: flex;
    margin-right: auto;
    margin-left: auto;
