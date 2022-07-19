@@ -9,20 +9,21 @@
     <title>Entry Result</title>
 </head>
 <body>
-    <% if(result.acknowledged && file_result.acknowledged) { %>
-        <p>Your entry was successfully uploaded to the database!</p>
-    <% } else { %>
-        <p>Oh no! It looks like something went wrong. We were not able to add your entry to the database. Please try again. </p>
-    <% } %>
+    <div class="confirmation">
+        <h2>Entry Result</h2>
 
-    <!-- <p>Data Success?</p>
-    <p><%= result.acknowledged %></p>
-    <br>
-    <p>File Success?</p>
-    <p><%= file_result.acknowledged %></p> -->
+        <div class="message">
+            <% if(result.acknowledged && file_result.acknowledged) { %>
+                <p>Your entry was successfully uploaded to the database!</p>
+            <% } else { %>
+                <p>Oh no! It looks like something went wrong. We were not able to add your entry to the database. Please try again. </p>
+            <% } %>
+        </div>
 
-    <a href="/">Go home</a>
-    <br>
-    <a href="/enter-art">Enter another piece</a>
+
+        <div class="return"><a href="/admin">Return to the Admin Landing Page</a></div>
+        <div class="return"><a href="/enter-art">Add Another Piece to the Database</a></div>
+
+    </div>
 </body>
 </html>
