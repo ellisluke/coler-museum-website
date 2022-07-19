@@ -35,7 +35,7 @@ label, .details p{
     width: 315px;
 }
 
-#submit {
+#submitButton {
     width: 315px;
     height: 40px;
     border-radius: 2em;
@@ -48,7 +48,7 @@ label, .details p{
     font-size: 16px;
 }
 
-#submit:hover {
+#submitButton:hover {
     cursor: pointer;
     background-color: #27458b;
     transition: 0.5s;
