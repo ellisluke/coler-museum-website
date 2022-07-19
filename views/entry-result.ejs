@@ -8,11 +8,17 @@
     <title>Entry Result</title>
 </head>
 <body>
-    <p>Data Success?</p>
+    <% if(result.acknowledged and file_result.acknowledged) { %>
+        <p>Your entry was successfully uploaded to the database!</p>
+    <% } else { %>
+        <p>Oh no! It looks like something went wrong. We were not able to add your entry to the database. Please try again. </p>
+    <% } %>
+
+    <!-- <p>Data Success?</p>
     <p><%= result.acknowledged %></p>
     <br>
     <p>File Success?</p>
-    <p><%= file_result.acknowledged %></p>
+    <p><%= file_result.acknowledged %></p> -->
 
     <a href="/">Go home</a>
     <br>
