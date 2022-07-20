@@ -38,6 +38,7 @@ server.use(express.static('public'))
 server.use('/images', express.static(path.join(__dirname, 'public', 'images')))
 server.use('/css', express.static(path.join(__dirname, 'public', 'styles')))
 server.use('/scripts', express.static(path.join(__dirname, 'public', 'scripts')))
+server.use('/gallery1', express.static(path.join(__dirname, 'public', 'first-successful-museum-7-20')))
 
 server.use(session({
     secret: "aqu457mcf06$%^&@",
@@ -53,6 +54,11 @@ server.use((req, res, next) => {
 
     next()
 })
+
+// server.use(cors({
+//     origin: '*',
+//     methods: ['GET']
+// }))
 
 const client = new MongoClient(process.env.LUKE_ATLAS_URI)
 const port = 8080 
@@ -87,7 +93,7 @@ server.get("/", async (req, res) => {
 })
 
 server.get("/galleries", (req, res) => {
-    res.render("galleries.ejs")
+    res.sendFile(path.join(__dirname, 'public', 'gallery1', 'index.html'))
 })
 
 server.get('/login', (req, res) => {
@@ -250,6 +256,21 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     } catch (e) {
         res.send(e)
     }
+})
+
+server.get("/unity-grab/image=:imageName", cors(), (req, res, next) => {
+    var options = {
+        root: path.join(__dirname, 'public', 'images', 'uploads'),
+        dotfiles: 'deny'
+    }
+    
+    res.sendFile(req.params.imageName, options, (e) => {
+        if (e) {
+            next(e)
+        } else {
+            console.log("Sent image: ", req.params.imageName)
+        }
+    })
 })
 
 server.get("/specific-art=:art_id", async (req, res) => {
