@@ -38,6 +38,7 @@ server.use(express.static('public'))
 server.use('/images', express.static(path.join(__dirname, 'public', 'images')))
 server.use('/css', express.static(path.join(__dirname, 'public', 'styles')))
 server.use('/scripts', express.static(path.join(__dirname, 'public', 'scripts')))
+server.use('/gallery1', express.static(path.join(__dirname, 'public', 'first-successful-museum-7-20')))
 
 server.use(session({
     secret: "aqu457mcf06$%^&@",
@@ -92,7 +93,7 @@ server.get("/", async (req, res) => {
 })
 
 server.get("/galleries", (req, res) => {
-    res.render("galleries.ejs")
+    res.sendFile(path.join(__dirname, 'public', 'gallery1', 'index.html'))
 })
 
 server.get('/login', (req, res) => {
