@@ -257,6 +257,21 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     }
 })
 
+server.get("/unity-grab/image=:imageName", cors(), (req, res, next) => {
+    var options = {
+        root: path.join(__dirname, 'public', 'images', 'uploads'),
+        dotfiles: 'deny'
+    }
+    
+    res.sendFile(req.params.imageName, options, (e) => {
+        if (e) {
+            next(e)
+        } else {
+            console.log("Sent image: ", req.params.imageName)
+        }
+    })
+})
+
 server.get("/specific-art=:art_id", async (req, res) => {
     try {
         let specificArt = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
