@@ -54,6 +54,11 @@ server.use((req, res, next) => {
     next()
 })
 
+// server.use(cors({
+//     origin: '*',
+//     methods: ['GET']
+// }))
+
 const client = new MongoClient(process.env.LUKE_ATLAS_URI)
 const port = 8080 
 var artCollection
