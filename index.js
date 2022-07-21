@@ -176,7 +176,7 @@ server.get("/edit-art=:art_id", async (req, res) => {
 server.post("/edit-art=:art_id", async (req, res) => {
     try {
         let result = await artCollection.updateOne({"_id": ObjectId(req.params.art_id)}, {$set: req.body})
-        res.send(result)
+        res.render("edit-result.ejs", {result: result})
     } catch (e) {
         res.send(e)
     }
