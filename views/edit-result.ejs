@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/forms.css">
-    <title>Entry Result</title>
+    <title>Edit Result</title>
 </head>
 <body>
     <div class="confirmation">
@@ -14,15 +14,15 @@
 
         <div class="message">
             <% if(result.acknowledged) { %>
-                <p>Your entry was successfully uploaded to the database!</p>
+                <p>Your edit has been saved to the database.</p>
             <% } else { %>
-                <p>Oh no! It looks like something went wrong. We were not able to add your entry to the database. Please try again. </p>
+                <p>Oh no! It looks like something went wrong. We were not able to save your changes. Please try again. </p>
             <% } %>
         </div>
 
 
         <div class="return"><a href="/admin">Return to the Admin Landing Page</a></div>
-        <div class="return"><a href="/enter-art">Add Another Piece to the Database</a></div>
+        <div class="return"><a href="/admin-manage">Edit Another Piece of Art</a></div>
 
     </div>
 </body>

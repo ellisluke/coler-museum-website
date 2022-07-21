@@ -157,7 +157,7 @@ h1, h2 {
     border-bottom: white solid 2px;
 }
 
-.footer a:hover {
+.footer a:hover, .gallery a:hover {
     transition: 0.5s;
     border-bottom: #d2b374 solid 2px;
 }
@@ -174,4 +174,51 @@ h1, h2 {
         font-size: 28px;
         top: 20%;
     }
+}
+
+.galleries {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.gallery {
+    width: 400px;
+    height: 450px;
+    border: solid 2px #d2b374;
+    margin: 10px;
+    position: relative;
+}
+
+.gallery img {
+    width: 350px;
+    height: auto;
+    max-height: 300px;
+    border: none;
+}
+
+.gallery a {
+    text-decoration: none;
+    position: absolute;
+    bottom: 20px;
+    left: 38%;
+    color: white;
+    border-bottom: solid 2px white;
+}
+
+.filling-space {
+    width: 400px;
+    height: 0px;
+    margin:10px;
+    border: solid 2px #191919;
+}
+
+.description {
+    max-width: 700px;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
