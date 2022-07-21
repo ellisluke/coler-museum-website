@@ -93,7 +93,7 @@ server.get("/", async (req, res) => {
 })
 
 server.get("/galleries", (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'gallery1', 'index.html'))
+    res.render("galleries.ejs")
 })
 
 server.get('/login', (req, res) => {
