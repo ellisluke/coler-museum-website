@@ -16,9 +16,7 @@
         <form method="post" action="/manage-gallery=<%= galID %>" id="galleryForm">
             <div class="details" id="gallery-data-box">
                 <div class="center-text"><label for="galleryname">Gallery Name: </label></div>
-                <% if(result.acknowledged) { %>
-                    <p id="save-status">Success! Your change(s) has been saved.</p> 
-                <% } %>
+                
                 <input type="text" name="galleryname" value="<%= gallery.galleryname %>">
                 
                 <div class="center-text"><label for="gallerydesc">Gallery Description: </label></div>
