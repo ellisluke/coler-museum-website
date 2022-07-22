@@ -93,8 +93,14 @@ server.get("/", async (req, res) => {
     
 })
 
-server.get("/galleries", (req, res) => {
-    res.render("galleries.ejs")
+server.get("/galleries", async (req, res) => {
+    try {
+        let galleryData = await galleryCollection.find({}).project({galleryname: 1}).toArray()
+        res.render("galleries.ejs", {galData: galleryData})
+    } catch(e) {
+        res.send(e)
+    }
+    
 })
 
 server.get('/login', (req, res) => {
