@@ -20,7 +20,7 @@
             <% art.forEach((piece) => { %>
                 <div class="image-box">
                     <a href="/edit-art=<%= piece._id %>">
-                    <img src="/images/uploads/<%= piece.filename %>">
+                    <img src="/get-art/<%= piece.filename %>">
                     </a>
                     <p class="title"><%= piece.title %></p>
                     <p class="artist"><%= piece.artistname %></p>

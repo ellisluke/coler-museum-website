@@ -6,17 +6,33 @@ const { response } = require("express")
 const cors = require('cors')
 const path = require('path')
 const { appendFile } = require("fs")
+
+// const controller = require("./controller/file.controller.js")
+
+
 const multer = require("multer")
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "public/images/uploads")
-    },
-    filename: (req, file, cb) => {
-        console.log(file)
-        cb(null, Date.now() + path.extname(file.originalname))
-    }
+const maxFile = 5 * 1024 * 1024;
+const { Storage } = require('@google-cloud/storage')
+
+const storage = new Storage({keyFilename: "google-cloud-key.json"})
+const bucket = storage.bucket(process.env.BUCKET_NAME)
+
+// console.log(bucket)
+
+const mult = multer({ 
+    storage: multer.memoryStorage(),
+    limits: {fileSize: maxFile}
 })
-const upload = multer({ storage: storage})
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, "public/images/uploads")
+//     },
+//     filename: (req, file, cb) => {
+//         console.log(file)
+//         cb(null, Date.now() + path.extname(file.originalname))
+//     }
+// })
+
 
 const server = express()
 
@@ -292,21 +308,90 @@ server.get("/specific-art=:art_id", async (req, res) => {
 })
 
 // UPLOAD DATA
-server.post("/submit-art", upload.single("image"), async (req, res) => {
+// server.post("/submit-art", upload.single("image"), async (req, res) => {
+//     try {
+//         console.log(req.body)
+//         let result = await artCollection.insertOne(req.body)
+//         const new_id = result.insertedId
+//         let file_add = await artCollection.updateOne(
+//             {"_id": new_id},
+//             { $set: {"filename": req.file.filename}}
+//         )
+//         res.render("entry-result.ejs", {result: result, file_result: file_add})
+//     } catch (e) {
+//         console.log(e)
+//         res.status(500).send("ERROR")
+//     }
+// })
+
+// UPLOAD DATA
+// Adds form input field data to database
+// Uploads image to Google Cloud Bucket
+server.post("/submit-art", mult.single('image'), async (req, res) => {
+    console.log(req.file)
+    if (!req.file) {
+        res.status(400).send({message: "We couldn't read a file, please try again."})
+        return
+    }
+
+    const newName = Date.now() + path.extname(req.file.originalname)
+    const blob = bucket.file(newName)
+    const blobStream = blob.createWriteStream({
+        resumable: false
+    })
+
+    console.log(`${bucket.name}/${blob.name}`)
+
+    blobStream.on('finish', res => {})
+
+    blobStream.on('finish', () => {
+        const publicUrl = `https://storage.gooleapis.com/${bucket.name}/${blob.name}`
+        console.log(publicUrl)
+    })
+
+    blobStream.end(req.file.buffer)
+
     try {
-        console.log(req.body)
-        let result = await artCollection.insertOne(req.body)
-        const new_id = result.insertedId
-        let file_add = await artCollection.updateOne(
-            {"_id": new_id},
-            { $set: {"filename": req.file.filename}}
-        )
-        res.render("entry-result.ejs", {result: result, file_result: file_add})
+        // console.log(req.body)
+        let result = await artCollection.insertOne({
+            "artistname": req.body.artistname,
+            "title": req.body.title,
+            "date": req.body.date,
+            "med": req.body.med,
+            "statement": req.body.statement,
+            "filename": newName})
+        // const new_id = result.insertedId
+        // let file_add = await artCollection.updateOne(
+        //     {"_id": new_id},
+        //     { $set: {"filename": req.file.filename}}
+        // )
+        res.render("entry-result.ejs", {result: result})
     } catch (e) {
         console.log(e)
         res.status(500).send("ERROR")
     }
 })
+
+// To get an image file, use /get-art/filename
+server.get("/get-art/:file", (req, res) => {
+    var stream = bucket.file(req.params.file).createReadStream()
+
+    res.writeHead(200, {'Content-Type': ['image/jpg', 'image/png' ]});
+
+    stream.on('data', (data) => {
+        res.write(data)
+    })
+
+    stream.on('error', (err) => {
+        console.log('error reading stream', err);
+      });
+    
+    stream.on('end', () => {
+        console.log("finished!")
+        res.end()
+    });
+    
+}) 
 
 // FETCH DATA
 server.get("/fetch_art", async (req, res, next) => {
@@ -319,7 +404,7 @@ server.get("/fetch_art", async (req, res, next) => {
     }
 })
 
-// To fetch image, go to domain /images/ tall-cat.jpg
+
 
 server.get("/all_art", async (req, res) => {
     try {
@@ -347,3 +432,5 @@ server.get("/enter-art", async (req, res) => {
     // }
     res.render("art-entry-form.ejs")
 })
+
+
