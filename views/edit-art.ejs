@@ -13,7 +13,7 @@
         <h2>Edit <em><%= details.title %></em> Details</h2>
 
         <form method="post" action="/edit-art=<%= details._id %>">
-            <img src="/images/uploads/<%= details.filename %>" style="height: 300px">
+            <img src="/get-art/<%= details.filename %>" style="height: 300px">
 
             <div class="center-text"><label for="title">Title</label></div>
             <input type="text" value="<%= details.title %>" name="title">
