@@ -66,7 +66,7 @@ server.use(session({
 
 // CORS
 server.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080")
     res.setHeader("Access-Control-Allow-Methods", 'GET')
 
     next()
@@ -281,20 +281,20 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     }
 })
 
-server.get("/unity-grab/image=:imageName", cors(), (req, res, next) => {
-    var options = {
-        root: path.join(__dirname, 'public', 'images', 'uploads'),
-        dotfiles: 'deny'
-    }
+// server.get("/unity-grab/image=:imageName", cors(), (req, res, next) => {
+//     var options = {
+//         root: path.join(__dirname, 'public', 'images', 'uploads'),
+//         dotfiles: 'deny'
+//     }
     
-    res.sendFile(req.params.imageName, options, (e) => {
-        if (e) {
-            next(e)
-        } else {
-            console.log("Sent image: ", req.params.imageName)
-        }
-    })
-})
+//     res.sendFile(req.params.imageName, options, (e) => {
+//         if (e) {
+//             next(e)
+//         } else {
+//             console.log("Sent image: ", req.params.imageName)
+//         }
+//     })
+// })
 
 server.get("/specific-art=:art_id", async (req, res) => {
     try {
@@ -373,7 +373,7 @@ server.post("/submit-art", mult.single('image'), async (req, res) => {
 })
 
 // To get an image file, use /get-art/filename
-server.get("/get-art/:file", (req, res) => {
+server.get("/get-art/:file", cors(), (req, res) => {
     var stream = bucket.file(req.params.file).createReadStream()
 
     res.writeHead(200, {'Content-Type': ['image/jpg', 'image/png' ]});
