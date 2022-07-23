@@ -8,6 +8,33 @@
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body>
+    
+    <a href="/galleries" style="
+    float: left;
+    margin-top: 1%;
+    margin-left: 1%;
+    text-decoration: none;
+    color: black;
+    ">
+      <div style="background-color: rgb(221, 221, 221);
+    height: 100%;
+    width: 120%;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 5px 0px 5px 5px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    "><img src="/images/arrow.png" alt="back arrow" style="
+    width: 18px;
+    margin-right: 20px
+    ">
+    Return to galleries page</div>
+    </a>
+    
+    
+    
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600></canvas>
       <div id="unity-loading-bar">
@@ -15,6 +42,7 @@
         <div id="unity-progress-bar-empty">
           <div id="unity-progress-bar-full"></div>
         </div>
+        
       </div>
       <div id="unity-warning"> </div>
       <div id="unity-footer">
@@ -23,6 +51,17 @@
         <div id="unity-build-title">Coler Museum</div>
       </div>
     </div>
+    
+    <img src="/images/galleryInstructions.png" alt="Instructions for Gallery" style="
+      float: right;
+      width: 20%;
+      margin-right: 10%;
+      margin-top: 10%;
+      border-radius: 20px;
+      border: 2px black solid;
+      ">
+    
+      
     <script>
       var container = document.querySelector("#unity-container");
       var canvas = document.querySelector("#unity-canvas");
