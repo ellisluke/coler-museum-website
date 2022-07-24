@@ -290,6 +290,19 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     }
 })
 
+server.get("/unity-grab/random", cors(), async (req, res) => {
+    try {
+        let artFiles = await artCollection.find({}).project({filename: 1}).toArray()
+        const randomFile = artFiles[Math.floor(Math.random() * artFiles.length)]
+
+        console.log("Random art requested, sent: " + randomFile.filename)
+        res.redirect(`/get-art/${randomFile.filename}`)
+    } catch (e) {
+        console.log("Couldn't select random art")
+        res.send("ERROR")
+    }
+})
+
 // A way to get JSON data on specific art (not the file itself), not currently used
 server.get("/specific-art=:art_id", async (req, res) => {
     try {
