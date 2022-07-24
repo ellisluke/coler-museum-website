@@ -4,7 +4,7 @@ $(document).ready(function () {
         $("#galleryForm").submit();
     })
 
-    // setTimeout(() => {
-    //       $('#save-status').hide()
-    // }, 5000);
+    setTimeout(() => {
+          $("#statusMessage").fadeOut();
+    }, 5000);
 })
