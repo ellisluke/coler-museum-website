@@ -127,6 +127,11 @@ a:hover {
     transition: 0.5s;
 }
 
+#login-message {
+    width: 100%;
+    text-align: center;
+    color: red;
+}
 
 
 

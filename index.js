@@ -66,7 +66,7 @@ server.use(session({
 
 // CORS
 server.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080")
     res.setHeader("Access-Control-Allow-Methods", 'GET')
 
     next()
@@ -122,6 +122,7 @@ server.get("/galleries", async (req, res) => {
 server.get('/login', (req, res) => {
     if (req.session.admin == true) {
         res.redirect("/admin")
+        return
     }
     res.render("login.ejs", {message: ""})
 })
@@ -136,17 +137,14 @@ server.post('/login', async (req, res) => {
                     req.session.admin = true
                     res.redirect("/admin")
                 }
+                else {
+                    res.render("login.ejs", {message: "Login attempt failed."})
+                    return
+                }
             })
         } else {
             res.render("login.ejs", {message: "Login attempt failed."})
         }
-        
-        
-        // if (req.body.username == userData.username && req.body.password == userData.password) {
-        //     res.send("success!")
-        // } else {
-        //     res.send("failure!")
-        // }
     } catch (e) {
         res.send("uh oh")
     }
@@ -155,44 +153,47 @@ server.post('/login', async (req, res) => {
 // ADMIN PAGE
 server.get("/admin", async (req, res) => {
     // Make sure user is logged in
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    // }
-    // else {
+    if (!req.session.admin) {
+        res.redirect('/')
+    }
+    else {
         try {
             var galleryData = await galleryCollection.find({}).toArray()
             // async function to build array of actual art data
             res.render("admin.ejs", {gallery: galleryData})
         } catch (e) {
             res.send(e)
-        } 
-    // } 
-    // res.render("admin.ejs", galleryData)
+        }
+    } 
 })
 
 server.get("/admin-manage", async (req, res) => {
     // comment out next three lines for login work around
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    // } else {
+    if (!req.session.admin) {
+        res.redirect('/')
+    } else {
         try {
             var pieces = await artCollection.find({}).project({ title: 1, artistname: 1, filename: 1}).toArray()
             res.render("admin-manage.ejs", {art: pieces})
         } catch (e) {
             res.send(e)
         }
-    // }
+    }
 
 })
 
 server.get("/edit-art=:art_id", async (req, res) => {
-    try {
-        console.log("Requested data for art id: " + req.params.art_id)
-        let details = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
-        res.render("edit-art.ejs", {details: details})
-        
-    } catch (e) {
-        res.send(e)
+    if (!req.session.admin) {
+        res.redirect('/')
+    } else {
+        try {
+            console.log("Requested data for art id: " + req.params.art_id)
+            let details = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
+            res.render("edit-art.ejs", {details: details})
+            
+        } catch (e) {
+            res.send(e)
+        }
     }
 })
 
@@ -216,25 +217,32 @@ server.post("/delete-art=:delete_id", async (req, res) => {
 })
 
 // These two are for admin's gallery management page
-server.get("/manage-gallery=:galleryID", async (req, res) => {
-    try {
-        galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
-        let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
+server.get("/manage-gallery=:galleryID/:status?", async (req, res) => {
+    if (!req.session.admin) {
+        res.redirect('/')
+    } else {
+        try {
+            galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
+            let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
 
-        // var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
-        res.render("manage-gallery.ejs", {
-            galID: req.params.galleryID, 
-            gallery: galleryContents, 
-            art: artData })
-        // res.send({
-        //     galID: req.params.galleryID, 
-        //     gallery: galleryContents, 
-        //     art: artData })
-    } catch (e) {
-        res.send(e)
+            // var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
+            res.render("manage-gallery.ejs", {
+                galID: req.params.galleryID, 
+                gallery: galleryContents, 
+                art: artData,
+                status: req.params.status
+            })
+            // res.send({
+            //     galID: req.params.galleryID, 
+            //     gallery: galleryContents, 
+            //     art: artData })
+        } catch (e) {
+            res.send(e)
+        }
     }
 })
 
+// Process changes to gallery management page
 server.post("/manage-gallery=:galleryID", async (req, res) => {
     try {
         let result = await galleryCollection.updateOne(
@@ -244,13 +252,14 @@ server.post("/manage-gallery=:galleryID", async (req, res) => {
                 "gallerydesc": req.body.gallerydesc,
                 "galleryname": req.body.galleryname
             }})
-        res.redirect("/manage-gallery=" + req.params.galleryID)
+        res.redirect("/manage-gallery=" + req.params.galleryID + "/" + result.acknowledged)
     } catch (e) {
         res.send(e)
     }
     
 })
 
+// Serves gallery data (as JSON object) to Unity WebRequest, requires CORS middleware
 server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     try {
         // Pull gallery data
@@ -281,21 +290,20 @@ server.get("/unity-grab/gallery=:galleryID", cors(), async (req, res) => {
     }
 })
 
-server.get("/unity-grab/image=:imageName", cors(), (req, res, next) => {
-    var options = {
-        root: path.join(__dirname, 'public', 'images', 'uploads'),
-        dotfiles: 'deny'
+server.get("/unity-grab/random", cors(), async (req, res) => {
+    try {
+        let artFiles = await artCollection.find({}).project({filename: 1}).toArray()
+        const randomFile = artFiles[Math.floor(Math.random() * artFiles.length)]
+
+        console.log("Random art requested, sent: " + randomFile.filename)
+        res.redirect(`/get-art/${randomFile.filename}`)
+    } catch (e) {
+        console.log("Couldn't select random art")
+        res.send("ERROR")
     }
-    
-    res.sendFile(req.params.imageName, options, (e) => {
-        if (e) {
-            next(e)
-        } else {
-            console.log("Sent image: ", req.params.imageName)
-        }
-    })
 })
 
+// A way to get JSON data on specific art (not the file itself), not currently used
 server.get("/specific-art=:art_id", async (req, res) => {
     try {
         let specificArt = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
@@ -307,25 +315,18 @@ server.get("/specific-art=:art_id", async (req, res) => {
     
 })
 
-// UPLOAD DATA
-// server.post("/submit-art", upload.single("image"), async (req, res) => {
-//     try {
-//         console.log(req.body)
-//         let result = await artCollection.insertOne(req.body)
-//         const new_id = result.insertedId
-//         let file_add = await artCollection.updateOne(
-//             {"_id": new_id},
-//             { $set: {"filename": req.file.filename}}
-//         )
-//         res.render("entry-result.ejs", {result: result, file_result: file_add})
-//     } catch (e) {
-//         console.log(e)
-//         res.status(500).send("ERROR")
-//     }
-// })
+
+// Renders submission form for new art pieces
+server.get("/enter-art", async (req, res) => {
+    if (!req.session.admin) {
+        res.redirect('/')
+        return
+    }
+    res.render("art-entry-form.ejs")
+})
 
 // UPLOAD DATA
-// Adds form input field data to database
+// Adds form input field data to database (form rendered above)
 // Uploads image to Google Cloud Bucket
 server.post("/submit-art", mult.single('image'), async (req, res) => {
     console.log(req.file)
@@ -372,8 +373,9 @@ server.post("/submit-art", mult.single('image'), async (req, res) => {
     }
 })
 
+// Pulls image file from google cloud bucket
 // To get an image file, use /get-art/filename
-server.get("/get-art/:file", (req, res) => {
+server.get("/get-art/:file", cors(), (req, res) => {
     var stream = bucket.file(req.params.file).createReadStream()
 
     res.writeHead(200, {'Content-Type': ['image/jpg', 'image/png' ]});
@@ -387,13 +389,12 @@ server.get("/get-art/:file", (req, res) => {
       });
     
     stream.on('end', () => {
-        console.log("finished!")
         res.end()
     });
     
 }) 
 
-// FETCH DATA
+// Sends all art JSON data, not currently used
 server.get("/fetch_art", async (req, res, next) => {
     try {
         console.log("Art has been requested!")
@@ -404,8 +405,7 @@ server.get("/fetch_art", async (req, res, next) => {
     }
 })
 
-
-
+// Gets all JSON data for Art collection, renders the phone gallery view
 server.get("/all_art", async (req, res) => {
     try {
         console.log("All records have been requested!")
@@ -416,6 +416,7 @@ server.get("/all_art", async (req, res) => {
     }
 })
 
+// Sends all gallery JSON data
 server.get("/gallery-data", async(req, res) => {
     try {
         console.log("Gallery data has been requested!")
@@ -426,11 +427,10 @@ server.get("/gallery-data", async(req, res) => {
     }
 })
 
-server.get("/enter-art", async (req, res) => {
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    // }
-    res.render("art-entry-form.ejs")
+// End logged in session
+server.get("/logout", (req, res) => {
+    req.session.admin = false
+    res.redirect("/")
 })
 
 

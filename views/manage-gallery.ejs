@@ -12,6 +12,9 @@
 <body>
     <div class="gallery">
         <h2>Manage Gallery <%= gallery.gallerynum %></h2>
+        <% if (status == "true") { %>
+            <p id="statusMessage">Your changes have been saved!</p>
+        <% } %>
         
         <form method="post" action="/manage-gallery=<%= galID %>" id="galleryForm">
             <div class="details" id="gallery-data-box">
@@ -26,6 +29,7 @@
                 <input id="submitButton" type="submit" value="Save Changes">
 
                 <div class="return"><a href="/admin">Return to the Admin Landing Page</a></div>
+                <div class="return"><a href="/gallery<%= gallery.gallerynum %>">View your changes live</a></div>
             </div>
             
             <div class="artwork">

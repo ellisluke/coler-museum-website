@@ -141,3 +141,9 @@ select {
     width: 90%;
     text-align: center;
 }
+
+#statusMessage {
+    width: 100%;
+    text-align: center;
+    color: rgb(0, 203, 0);
+}
