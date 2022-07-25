@@ -192,7 +192,7 @@ h1, h2 {
 
 .gallery img {
     width: 350px;
-    height: auto;
+    height: 200px;
     max-height: 300px;
     border: none;
 }

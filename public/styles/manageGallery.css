@@ -145,5 +145,7 @@ select {
 #statusMessage {
     width: 100%;
     text-align: center;
-    color: rgb(0, 203, 0);
+    color: #45629f;
 }
+
+/* neon green: rgb(0, 203, 0) */
