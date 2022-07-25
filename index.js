@@ -56,6 +56,7 @@ server.use('/css', express.static(path.join(__dirname, 'public', 'styles')))
 server.use('/scripts', express.static(path.join(__dirname, 'public', 'scripts')))
 server.use('/gallery1', express.static(path.join(__dirname, 'public', 'gallery1')))
 server.use('/gallery2', express.static(path.join(__dirname, 'public', 'gallery2')))
+server.use('/gallery3', express.static(path.join(__dirname, 'public', 'gallery3')))
 
 server.use(session({
     secret: "aqu457mcf06$%^&@",
