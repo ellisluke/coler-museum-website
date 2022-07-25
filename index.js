@@ -169,23 +169,23 @@ server.get("/admin", async (req, res) => {
 
 server.get("/admin-manage", async (req, res) => {
     // comment out next three lines for login work around
-    if (!req.session.admin) {
-        res.redirect('/')
-    } else {
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    // } else {
         try {
             var pieces = await artCollection.find({}).project({ title: 1, artistname: 1, filename: 1}).toArray()
             res.render("admin-manage.ejs", {art: pieces})
         } catch (e) {
             res.send(e)
         }
-    }
+    // }
 
 })
 
 server.get("/edit-art=:art_id", async (req, res) => {
-    if (!req.session.admin) {
-        res.redirect('/')
-    } else {
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    // } else {
         try {
             console.log("Requested data for art id: " + req.params.art_id)
             let details = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
@@ -194,7 +194,7 @@ server.get("/edit-art=:art_id", async (req, res) => {
         } catch (e) {
             res.send(e)
         }
-    }
+    // }
 })
 
 server.post("/edit-art=:art_id", async (req, res) => {
@@ -218,9 +218,9 @@ server.post("/delete-art=:delete_id", async (req, res) => {
 
 // These two are for admin's gallery management page
 server.get("/manage-gallery=:galleryID/:status?", async (req, res) => {
-    if (!req.session.admin) {
-        res.redirect('/')
-    } else {
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    // } else {
         try {
             galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
             let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
@@ -239,7 +239,7 @@ server.get("/manage-gallery=:galleryID/:status?", async (req, res) => {
         } catch (e) {
             res.send(e)
         }
-    }
+    // }
 })
 
 // Process changes to gallery management page
@@ -318,10 +318,10 @@ server.get("/specific-art=:art_id", async (req, res) => {
 
 // Renders submission form for new art pieces
 server.get("/enter-art", async (req, res) => {
-    if (!req.session.admin) {
-        res.redirect('/')
-        return
-    }
+    // if (!req.session.admin) {
+    //     res.redirect('/')
+    //     return
+    // }
     res.render("art-entry-form.ejs")
 })
 
