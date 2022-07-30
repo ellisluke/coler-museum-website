@@ -105,19 +105,16 @@ server.get("/", async (req, res) => {
         res.render("home.ejs", {galleries: gals})
     } catch (e) {
         res.send(e)
-    }
-    
-    
+    } 
 })
 
 server.get("/galleries", async (req, res) => {
     try {
-        let galleryData = await galleryCollection.find({}).project({galleryname: 1}).toArray()
+        let galleryData = await galleryCollection.find({}).project({galleryname: 1, gallerydesc: 1}).toArray()
         res.render("galleries.ejs", {galData: galleryData})
     } catch(e) {
         res.send(e)
     }
-    
 })
 
 server.get('/login', (req, res) => {
@@ -313,7 +310,6 @@ server.get("/specific-art=:art_id", async (req, res) => {
     catch (e) {
         res.send(e)
     }
-    
 })
 
 

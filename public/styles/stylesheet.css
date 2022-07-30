@@ -230,3 +230,8 @@ h1, h2 {
 .second {
     margin-top: 0px;
 }
+
+.galDesc {
+    height: 20%;
+    overflow: hidden;
+}
