@@ -1,47 +1,32 @@
 require('dotenv').config()
 const { MongoClient, ObjectID, MongoUnexpectedServerResponseError, ObjectId } = require("mongodb")
 const express = require("express")
+const webRequest = require("request")
 const BodyParser = require('body-parser')
 const { response } = require("express")
 const cors = require('cors')
 const path = require('path')
 const { appendFile } = require("fs")
+const { auth, requiresAuth } = require('express-openid-connect')
 
-// const controller = require("./controller/file.controller.js")
 
-
+// File Upload Configuration
 const multer = require("multer")
-const maxFile = 5 * 1024 * 1024;
+const maxFile = 5 * 1024 * 1024; // 5 MB max file size
 const { Storage } = require('@google-cloud/storage')
+const { resolveSoa } = require('dns')
+const { request } = require('http')
 
 const storage = new Storage({keyFilename: "google-cloud-key.json"})
 const bucket = storage.bucket(process.env.BUCKET_NAME)
-
-// console.log(bucket)
 
 const mult = multer({ 
     storage: multer.memoryStorage(),
     limits: {fileSize: maxFile}
 })
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, "public/images/uploads")
-//     },
-//     filename: (req, file, cb) => {
-//         console.log(file)
-//         cb(null, Date.now() + path.extname(file.originalname))
-//     }
-// })
 
 
 const server = express()
-
-// Login dependencies
-const bcrypt = require('bcrypt')
-const passport = require('passport')
-const session = require('express-session')
-const flash = require("express-flash")
-
 
 
 server.use(BodyParser.json())
@@ -58,14 +43,26 @@ server.use('/gallery1', express.static(path.join(__dirname, 'public', 'gallery1'
 server.use('/gallery2', express.static(path.join(__dirname, 'public', 'gallery2')))
 server.use('/gallery3', express.static(path.join(__dirname, 'public', 'gallery3')))
 
-server.use(session({
-    secret: "aqu457mcf06$%^&@",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 6000000 }
-}))
+// auth0 configuration
+const config = {
+    authRequired: false,
+    auth0Logout: true,
+    secret: process.env.SECRET,
+    baseURL: process.env.BASE_URL,
+    clientID: process.env.CLIENT_ID,
+    issuerBaseURL: process.env.ISSUER_BASE_URL
+}
 
-// CORS
+var options = {
+    theme: {
+        logo: "https://clipartix.com/wp-content/uploads/2016/09/Empty-picture-frame-clipart-clipart-kid-2.png"
+    }
+}
+
+server.use(auth(config))
+
+
+// CORS configruation
 server.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080")
     res.setHeader("Access-Control-Allow-Methods", 'GET')
@@ -73,11 +70,7 @@ server.use((req, res, next) => {
     next()
 })
 
-// server.use(cors({
-//     origin: '*',
-//     methods: ['GET']
-// }))
-
+// MongoDB Database connections
 const client = new MongoClient(process.env.LUKE_ATLAS_URI)
 const port = 8080 
 var artCollection
@@ -85,7 +78,7 @@ var galleryCollection
 var userCollection
 var gallery
 
-
+// start server, database connections
 server.listen(port, async () => {
     try {
         await client.connect()
@@ -98,6 +91,8 @@ server.listen(port, async () => {
     }
 })
 
+// ROUTES
+
 // Home page
 server.get("/", async (req, res) => {
     try {
@@ -108,6 +103,7 @@ server.get("/", async (req, res) => {
     } 
 })
 
+// Galleries page
 server.get("/galleries", async (req, res) => {
     try {
         let galleryData = await galleryCollection.find({}).project({galleryname: 1, gallerydesc: 1}).toArray()
@@ -117,85 +113,46 @@ server.get("/galleries", async (req, res) => {
     }
 })
 
-server.get('/login', (req, res) => {
-    if (req.session.admin == true) {
-        res.redirect("/admin")
-        return
-    }
-    res.render("login.ejs", {message: ""})
-})
+// ADMIN ROUTES
 
-server.post('/login', async (req, res) => {
+// server.get("/login/:page", (req, res) => {
+//     const { page } = req.params
+//     res.oidc.login({
+//         returnTo: page
+//     })
+// })
+
+server.get("/admin", requiresAuth(), async (req, res) => {
     try {
-        let userData = await userCollection.findOne()
-        req.session.admin = false
-        if (req.body.username == userData.username) {
-            bcrypt.compare(req.body.password, userData.password, (err, result) => {
-                if (result) {
-                    req.session.admin = true
-                    res.redirect("/admin")
-                }
-                else {
-                    res.render("login.ejs", {message: "Login attempt failed."})
-                    return
-                }
-            })
-        } else {
-            res.render("login.ejs", {message: "Login attempt failed."})
-        }
+        var galleryData = await galleryCollection.find({}).toArray()
+        // async function to build array of actual art data
+        res.render("admin.ejs", {gallery: galleryData})
     } catch (e) {
-        res.send("uh oh")
+        res.send(e)
     }
 })
 
-// ADMIN PAGE
-server.get("/admin", async (req, res) => {
-    // Make sure user is logged in
-    if (!req.session.admin) {
-        res.redirect('/')
+server.get("/admin-manage", requiresAuth(), async (req, res) => {
+    try {
+        var pieces = await artCollection.find({}).project({ title: 1, artistname: 1, filename: 1}).toArray()
+        res.render("admin-manage.ejs", {art: pieces})
+    } catch (e) {
+        res.send(e)
     }
-    else {
-        try {
-            var galleryData = await galleryCollection.find({}).toArray()
-            // async function to build array of actual art data
-            res.render("admin.ejs", {gallery: galleryData})
-        } catch (e) {
-            res.send(e)
-        }
-    } 
 })
 
-server.get("/admin-manage", async (req, res) => {
-    // comment out next three lines for login work around
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    // } else {
-        try {
-            var pieces = await artCollection.find({}).project({ title: 1, artistname: 1, filename: 1}).toArray()
-            res.render("admin-manage.ejs", {art: pieces})
-        } catch (e) {
-            res.send(e)
-        }
-    // }
-
+server.get("/edit-art=:art_id", requiresAuth(), async (req, res) => {
+    try {
+        console.log("Requested data for art id: " + req.params.art_id)
+        let details = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
+        res.render("edit-art.ejs", {details: details})
+        
+    } catch (e) {
+        res.send(e)
+    }
 })
 
-server.get("/edit-art=:art_id", async (req, res) => {
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    // } else {
-        try {
-            console.log("Requested data for art id: " + req.params.art_id)
-            let details = await artCollection.findOne({"_id": ObjectId(req.params.art_id)})
-            res.render("edit-art.ejs", {details: details})
-            
-        } catch (e) {
-            res.send(e)
-        }
-    // }
-})
-
-server.post("/edit-art=:art_id", async (req, res) => {
+server.post("/edit-art=:art_id", requiresAuth(), async (req, res) => {
     try {
         let result = await artCollection.updateOne({"_id": ObjectId(req.params.art_id)}, {$set: req.body})
         res.render("edit-result.ejs", {result: result})
@@ -204,7 +161,7 @@ server.post("/edit-art=:art_id", async (req, res) => {
     }
 })
 
-server.post("/delete-art=:delete_id", async (req, res) => {
+server.post("/delete-art=:delete_id", requiresAuth(), async (req, res) => {
     try {
         // DELETE IMAGE AS WELL???
         let result = await artCollection.deleteOne({"_id": ObjectId(req.params.delete_id)})
@@ -215,29 +172,25 @@ server.post("/delete-art=:delete_id", async (req, res) => {
 })
 
 // These two are for admin's gallery management page
-server.get("/manage-gallery=:galleryID/:status?", async (req, res) => {
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    // } else {
-        try {
-            galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
-            let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
+server.get("/manage-gallery=:galleryID/:status?", requiresAuth(), async (req, res) => {
+    try {
+        galleryContents = await galleryCollection.findOne({"_id": ObjectId(req.params.galleryID)})
+        let artData = await artCollection.find({}).project({title: 1, artistname: 1, filename: 1}).toArray()
 
-            // var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
-            res.render("manage-gallery.ejs", {
-                galID: req.params.galleryID, 
-                gallery: galleryContents, 
-                art: artData,
-                status: req.params.status
-            })
-            // res.send({
-            //     galID: req.params.galleryID, 
-            //     gallery: galleryContents, 
-            //     art: artData })
-        } catch (e) {
-            res.send(e)
-        }
-    // }
+        // var artData = await artCollection.find({"_id": {"$in": artIDs}}).toArray()
+        res.render("manage-gallery.ejs", {
+            galID: req.params.galleryID, 
+            gallery: galleryContents, 
+            art: artData,
+            status: req.params.status
+        })
+        // res.send({
+        //     galID: req.params.galleryID, 
+        //     gallery: galleryContents, 
+        //     art: artData })
+    } catch (e) {
+        res.send(e)
+    }
 })
 
 // Process changes to gallery management page
@@ -314,18 +267,14 @@ server.get("/specific-art=:art_id", async (req, res) => {
 
 
 // Renders submission form for new art pieces
-server.get("/enter-art", async (req, res) => {
-    // if (!req.session.admin) {
-    //     res.redirect('/')
-    //     return
-    // }
+server.get("/enter-art", requiresAuth(), async (req, res) => {
     res.render("art-entry-form.ejs")
 })
 
 // UPLOAD DATA
 // Adds form input field data to database (form rendered above)
 // Uploads image to Google Cloud Bucket
-server.post("/submit-art", mult.single('image'), async (req, res) => {
+server.post("/submit-art", mult.single('image'), requiresAuth(), async (req, res) => {
     console.log(req.file)
     if (!req.file) {
         res.status(400).send({message: "We couldn't read a file, please try again."})
@@ -424,10 +373,5 @@ server.get("/gallery-data", async(req, res) => {
     }
 })
 
-// End logged in session
-server.get("/logout", (req, res) => {
-    req.session.admin = false
-    res.redirect("/")
-})
 
 
