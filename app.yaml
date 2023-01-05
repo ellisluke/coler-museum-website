@@ -3,7 +3,7 @@ env: flex
 network:
   name: coler-network
   instance_tag: coler-tag
-  subnetwork_name: coler-network
+  subnetwork_name: 
 vpc_access_connector:
   name: projects/coler-museum-2/locations/us-east1/connectors/coler-connector
   egress_setting: all-traffic
